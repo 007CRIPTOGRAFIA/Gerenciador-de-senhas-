@@ -1,5 +1,5 @@
 # Gerenciador-de-senhas
-<a heaf="https://github.com/LelePG/Gerenciador-de-senhas/blob/main/imagens/print.png"></a>
+<a heaf="https://github.com/imagens/print.png"></a>
 
 ## O que é este projeto?
 Este é um projeto de estudos envolvendo C++ e conexão com o banco de dados MySql que simula um gerenciador de senhas por linha de comando, onde é possível salvar senhas, criar senhas de um tamanho a escolha do usuário com diferentes tipos de caracteres buscando deixar a senha mais segura, sendo possível editar as senhas e excluí-las. 
