@@ -1,5 +1,5 @@
 # Gerenciador-de-senhas
-<img src = "imagens/print.png">
+<img src = "/blob/e9a0830326220c3e201a179c9ce896e7cdc75fd0/print.png">
 
 ## O que é este projeto?
 Este é um projeto de estudos envolvendo C++ e conexão com o banco de dados MySql que simula um gerenciador de senhas por linha de comando, onde é possível salvar senhas, criar senhas de um tamanho a escolha do usuário com diferentes tipos de caracteres buscando deixar a senha mais segura, sendo possível editar as senhas e excluí-las. 
