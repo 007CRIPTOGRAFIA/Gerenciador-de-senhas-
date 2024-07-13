@@ -1,7 +1,12 @@
 #!/bin/bash
-
 # Arquivo de banco de dados
 DB_FILE="senhas.db"
+
+# Credenciais do banco de dados
+DB_HOST="localhost"
+DB_USER="usuario"
+DB_PASS="senha"
+DB_NAME="gerenciador_senhas"
 
 # Função para mostrar o menu
 mostrar_menu() {
@@ -26,8 +31,15 @@ mostrar_instrucoes() {
 
 # Função para configurar banco de dados
 configurar_banco() {
-    touch "$DB_FILE"
-    echo "Banco de dados configurado em $DB_FILE"
+    mysql -u"$DB_USER" -p"$DB_PASS" -e "CREATE DATABASE IF NOT EXISTS $DB_NAME;"
+    mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "
+        CREATE TABLE IF NOT EXISTS senhas (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            aplicacao VARCHAR(255) NOT NULL,
+            senha VARCHAR(255) NOT NULL,
+            data TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );"
+    echo "Banco de dados configurado."
 }
 
 # Função para criar nova senha
@@ -35,8 +47,8 @@ criar_senha() {
     read -p "Digite a aplicação: " aplicacao
     read -sp "Digite a senha: " senha
     echo
-    data=$(date)
-    echo "$aplicacao | $senha | $data" >> "$DB_FILE"
+    mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "
+        INSERT INTO senhas (aplicacao, senha) VALUES ('$aplicacao', '$senha');"
     echo "Senha criada com sucesso!"
 }
 
@@ -45,15 +57,16 @@ salvar_senha_existente() {
     read -p "Digite a aplicação: " aplicacao
     read -sp "Digite a senha: " senha
     echo
-    data=$(date)
-    echo "$aplicacao | $senha | $data" >> "$DB_FILE"
+    mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "
+        INSERT INTO senhas (aplicacao, senha) VALUES ('$aplicacao', '$senha');"
     echo "Senha salva com sucesso!"
 }
 
 # Função para pegar senha
 pegar_senha() {
     read -p "Digite a aplicação: " aplicacao
-    grep "^$aplicacao" "$DB_FILE"
+    mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "
+        SELECT senha FROM senhas WHERE aplicacao='$aplicacao';"
 }
 
 # Função para alterar senha
@@ -61,29 +74,29 @@ alterar_senha() {
     read -p "Digite a aplicação: " aplicacao
     read -sp "Digite a nova senha: " nova_senha
     echo
-    data=$(date)
-    sed -i "/^$aplicacao/d" "$DB_FILE"
-    echo "$aplicacao | $nova_senha | $data" >> "$DB_FILE"
+    mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "
+        UPDATE senhas SET senha='$nova_senha' WHERE aplicacao='$aplicacao';"
     echo "Senha alterada com sucesso!"
 }
 
 # Função para excluir senha
 excluir_senha() {
     read -p "Digite a aplicação: " aplicacao
-    sed -i "/^$aplicacao/d" "$DB_FILE"
+    mysql -u"$DB_USER" -p"$DB_PASS" -D "$DB_NAME" -e "
+        DELETE FROM senhas WHERE aplicacao='$aplicacao';"
     echo "Senha excluída com sucesso!"
 }
 
 # Função para fazer backup
 fazer_backup() {
-    cp "$DB_FILE" "${DB_FILE}.bak"
+    mysqldump -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" > "${DB_NAME}_backup.sql"
     echo "Backup feito com sucesso!"
 }
 
 # Função para restaurar banco de dados
 restaurar_banco() {
-    if [ -f "${DB_FILE}.bak" ]; then
-        cp "${DB_FILE}.bak" "$DB_FILE"
+    if [ -f "${DB_NAME}_backup.sql" ]; then
+        mysql -u"$DB_USER" -p"$DB_PASS" "$DB_NAME" < "${DB_NAME}_backup.sql"
         echo "Banco de dados restaurado com sucesso!"
     else
         echo "Nenhum backup encontrado!"
