@@ -2,45 +2,58 @@
 <img src = "/print.png">
 
 ## O que é este projeto?
-Este é um projeto de estudos envolvendo C++ e conexão com o banco de dados MySql que simula um gerenciador de senhas por linha de comando, onde é possível salvar senhas, criar senhas de um tamanho a escolha do usuário com diferentes tipos de caracteres buscando deixar a senha mais segura, sendo possível editar as senhas e excluí-las. 
+Este projeto é um gerenciador de senhas por linha de comando escrito em Bash. Ele permite salvar, criar, editar e excluir senhas associadas a diferentes aplicações. Além disso, o projeto permite fazer backup e restaurar o banco de dados de senhas, garantindo que seus dados estejam sempre seguros.
 
-Como a aplicação envolve o uso de banco de dados, é possível além de criar o banco de dados (o que deve ser feito na primeira utilização da aplicação) realizar backups e restaurar esses backups do banco de dados.
+Como utilizar este projeto?
+Para utilizar este projeto, siga os passos abaixo:
 
-**IMPORTANTE: ao fazer o backup das senhas, é possível acessar todas as senhas cadastradas abrindo o arquivo de backup. Esse é um projeto de estudos, não uma aplicação comercial.**
+## Download do Projeto:
 
-## Como utilizar este projeto?
-Antes de tudo, você precisa ter o MySQL instalado no seu computador para poder utilizar a aplicação, e um usuário configurado para acessar o servidor MySQL, pois a aplicação solicitará um usuário e senha já existentes e cadastrados no MySQL local para poder criar o banco de dados.
+Clone o repositório com o comando git clone https://github.com/LelePG/Gerenciador-de-senhas.
+Ou faça o download do arquivo .zip clicando no botão verde "Code" e, em seguida, na opção de baixar o arquivo zip.
+Após baixar, descompacte o arquivo (caso tenha baixado a opção .zip) e abra o terminal na pasta principal da aplicação.
 
-Para utilizar este projeto, basta fazer o download do repositório, o que pode ser feito pelo comando `git clone https://github.com/LelePG/Gerenciador-de-senhas` ou fazendo o download do arquivo .zip clicando no botão verde escrito *Code* e em seguida na opção de baixar o arquivo zip. Depois de baixado abra o terminal na pasta principal da aplicação (é necessário descompatar o arquivo, caso você tenha baixado a opção .zip) e execute o comando make, que compilará os arquivos necessários e executará a aplicação.
+•Executar o Projeto:
+No terminal, dê permissão de execução ao script com o comando chmod +x gerenciador_senhas.sh.
+Execute o script com o comando ./gerenciador_senhas.sh.
 
-A partir disso, um menu será exibido, onde você pode selecionar as opções a partir de valores numéricos:
+•Funcionalidades do Menu:
+Uma vez que a aplicação esteja em execução, um menu será exibido. Você pode selecionar as opções a partir de valores numéricos:
 
-- 0 - Sair da aplicação
-- 1 - Ver informações de uso
-- 2 - Criar o banco de dados
-- 3 - Gerar senha de uma aplicação
-- 4 - Salvar senha externa à aplicação
-- 5 - Acessar uma senha existente
-- 6 - Editar uma senha existente
-- 7 - Excluir uma senha existente
-- 8 - Fazer backup do banco de dados
-- 9 - Restaurar o banco de dados através de um backup
+0 - Sair da aplicação
+1 - Ver instruções de uso
+2 - Configurar banco de dados
+3 - Criar nova senha
+4 - Salvar senha existente
+5 - Pegar senha
+6 - Alterar senha
+7 - Excluir senha
+8 - Fazer backup
+9 - Restaurar banco de dados
 
-O backup sempre será salvo na pasta src, e se espera que ele também esteja nesta pasta caso seja necessário utilizar a restauração.
+## Considerações de Segurança:
+•Backup de Senhas: Ao fazer o backup das senhas, é possível acessar todas as senhas cadastradas abrindo o arquivo de backup. Este é um projeto de estudos, não uma aplicação comercial, e as senhas são armazenadas em texto simples. Em um ambiente real, recomenda-se o uso de criptografia para proteger as senhas.
 
-## Bibliotecas necessárias:
-- MySQL Connector
-- Vector
-- Algorithm
-- iostream
-- stdlib
+## Observações:
+•Banco de Dados: O banco de dados é um simples arquivo de texto (senhas.db), onde as senhas são armazenadas em formato "aplicacao | senha | data".
 
-## Observações
-- A porta padrão definida no algortimo para o acesso ao servidor MySQL é a porta 3306
-- O banco de dados criado pela aplicação ainda pode ser acessado pelo terminal ou por qualquer que seja a forma que você utiliza para manipular bancos de dados
-- A aplicação não permite a exclusão do banco de dados, o que você deve fazer manualmente
+•Backup: O backup é feito criando uma cópia do arquivo de banco de dados com extensão .bak.
 
-## Links úteis:
-- [Manual de como utilizar o MySQL connector no c++](https://docs.huihoo.com/mysql/mysql-apps-using-connector-and-cpp.pdf)
-- [Instalação do MySQL connector (documentação oficial)](https://dev.mysql.com/doc/connector-cpp/8.0/en/connector-cpp-installation-source.html)
-- [Instalação do MySQL connector no linux](https://www.programmersought.com/article/24846121597/)
+•Restaurar: Para restaurar o banco de dados, o backup deve estar na mesma pasta do script.
+
+•Dependências: Este script não possui dependências externas, sendo necessário apenas ter o Bash instalado, o que é comum em sistemas Unix-like.
+
+## Explicação das Novas Funções:
+Configurar Banco: Cria o banco de dados e a tabela senhas se não existirem.
+Criar e Salvar Senha: Insere novas senhas na tabela senhas.
+Pegar Senha: Recupera a senha para uma aplicação específica.
+Alterar Senha: Atualiza a senha para uma aplicação específica.
+Excluir Senha: Remove a senha para uma aplicação específica.
+Fazer Backup: Cria um dump SQL do banco de dados.
+Restaurar Banco: Restaura o banco de dados a partir do dump SQL.
+
+## Observações de Segurança
+Criptografia de Senhas: Este script salva as senhas em texto claro. Em um cenário de produção, você deve criptografar as senhas antes de armazená-las.
+Variáveis de Ambiente: Para maior segurança, você pode armazenar as credenciais do banco de dados em variáveis de ambiente em vez de hardcodá-las no script.
+
+
